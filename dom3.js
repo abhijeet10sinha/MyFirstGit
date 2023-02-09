@@ -163,8 +163,10 @@ function addItem(e){
 
     // create delete button element
     var deleteBtn = document.createElement('button');
+    var editBtn = document.createElement('button');
     // add class
     deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+    editBtn.className = 'btn btn-outline-primary btn-sm float-end';
     // append text node
     deleteBtn.appendChild(document.createTextNode('X'));
     // append btn to li
@@ -183,3 +185,19 @@ function removeItem(e){
     }
 }
 
+filter.addEventListener('keyup', filterItems);
+function filterItems(e){
+    //conver to lower text
+    var text = e.target.value.toLowerCase();
+    //grabing all the li's within the Item list
+    var items = itemList.getElementsByTagName('li');
+    //conver to an array
+    Array.from(items).forEach(function(item){
+        var itemName = item.firstChild.textContent;
+        if(itemName.toLowerCase().indexOf(text) != -1){
+            item.style.display = 'block';
+        }else{
+            item.style.display = 'none';
+        }
+    })
+}
