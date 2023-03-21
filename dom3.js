@@ -141,39 +141,52 @@
 
 var form = document.getElementById('addForm');
 var itemList  = document.getElementById('items');
+var filter = document.getElementById('filter');
 
 // Form submit event
 form.addEventListener('submit', addItem);
 // Delete event
 itemList.addEventListener('click', removeItem);
+// Filter event
+filter.addEventListener('keyup', filterItems);
+
 // Add item
 function addItem(e){
     e.preventDefault();
-
     // get input value
     var newItem = document.getElementById('item').value;
-
+    var description = document.getElementById('description').value;
     // create new li element
     var li = document.createElement('li');
+
     // add class
     li.className = 'list-group-item';
+
     // add text node with input value
     li.appendChild(document.createTextNode(newItem));
-
+    li.appendChild(document.createTextNode(" "+description));
 
     // create delete button element
     var deleteBtn = document.createElement('button');
     var editBtn = document.createElement('button');
-    // add class
-    deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+    
+    // add class to delete button
+    deleteBtn.className = 'btn btn-danger btn-sm float-end delete';
     editBtn.className = 'btn btn-outline-primary btn-sm float-end';
+    
     // append text node
     deleteBtn.appendChild(document.createTextNode('X'));
+    editBtn.appendChild(document.createTextNode('Edit'));
+    
     // append btn to li
     li.appendChild(deleteBtn);
+    li.appendChild(editBtn);
+
     //append li to list
     itemList.appendChild(li);
 }
+
+
 
 //Remove Item
 function removeItem(e){
@@ -185,16 +198,17 @@ function removeItem(e){
     }
 }
 
-filter.addEventListener('keyup', filterItems);
+//Filter Items
 function filterItems(e){
-    //conver to lower text
+    //convert text to lower text
     var text = e.target.value.toLowerCase();
-    //grabing all the li's within the Item list
     var items = itemList.getElementsByTagName('li');
-    //conver to an array
+
+    //convert to an array
     Array.from(items).forEach(function(item){
         var itemName = item.firstChild.textContent;
-        if(itemName.toLowerCase().indexOf(text) != -1){
+        var description = item.childNodes[1].textContent;
+        if(itemName.toLowerCase().indexOf(text) != -1 || description.toLowerCase().indexOf(text) != -1){
             item.style.display = 'block';
         }else{
             item.style.display = 'none';
